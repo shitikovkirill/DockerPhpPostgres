@@ -107,6 +107,7 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
             $quantity = empty( $_POST['quantity'] ) ? 1 : apply_filters( 'woocommerce_stock_amount', $_POST['quantity'] );
             $variation_id = $_POST['variation_id'];
             $variation  = $_POST['variation'];
+            $save_for_later_id = $_POST['save_for_later_id'];
 
             $passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity, $variation_id);
 
@@ -115,7 +116,7 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
                 '$passed_validation'=>$passed_validation,
             ]);//*/
 
-            $meta_data = $this->selectProductData($product_id, $variation_id);
+            $meta_data = $this->selectProductData($product_id, $variation_id, $save_for_later_id);
             //*
             $logger->info('selectProductData', [
                 '$meta_data'=>$meta_data,
@@ -155,7 +156,7 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
             die();
         }
 
-        public function selectProductData( $product_id, $variation_id=-1 ){
+        public function selectProductData( $product_id, $variation_id=-1, $save_for_later_id){
             if ( is_user_logged_in() ){
                 global $wpdb;
 
@@ -163,11 +164,14 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
 
                 $query  =   "SELECT meta_data
                              FROM {$wpdb->yith_wsfl_table}
-                             WHERE {$wpdb->yith_wsfl_table}.product_id=%d AND {$wpdb->yith_wsfl_table}.user_id=%d";
+                             WHERE {$wpdb->yith_wsfl_table}.product_id=%d 
+                             AND {$wpdb->yith_wsfl_table}.user_id=%d
+                             AND {$wpdb->yith_wsfl_table}.ID=%d";
 
                 $parms  =   array(
                     $product_id,
-                    $user_id
+                    $user_id,
+                    $save_for_later_id
                 );
 
                 if( $variation_id!=-1 ){

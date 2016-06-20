@@ -26,13 +26,13 @@ class Ajax
     public function add_to_saveforlater_ajax(){
         //*
         $logger = new Logger(YWSFL_DIR.'/logs/add-to-saveforlater');
-        $logger->info('get_cart', [
+        $logger->info('add_to_saveforlater_ajax', [
             '$_POST'=>$_POST,
         ]);
-        die;
         //*/
         $request = Request::createFromGlobals();
         $save_for_later = $request->request->get('save_for_later');
+        $remove_item = $request->request->get('remove_item');
         $user_id = get_current_user_id();
         $product_id  =   isset($save_for_later) ? $save_for_later    :   -1;
         $variation_id = $request->request->get('variation_id');
@@ -41,25 +41,30 @@ class Ajax
 
         global $woocommerce;
         $items = $woocommerce->cart->get_cart();
-
-        //*
-        $logger->info('get_cart', [
-            '$items'=>$items,
-        ]); //*/
-
+        $return = false;
         foreach($items as $item => $values) {
-            if($product_id == $values['product_id']&&
-                $variation_id == $values['variation_id']){
+            if(
+                $remove_item == $item &&
+                $product_id == $values['product_id'] &&
+                $variation_id == $values['variation_id']
+            ){
                 $meta_data = serialize($values);
+
+                $user_id    =   isset( $user_id )?$user_id:-1;
+                $quantity   =   isset( $quantity )?$quantity:1;
+                $variation_id   =   isset( $variation_id ) ? $variation_id: -1;
+
+                $return = $this->add($user_id, $product_id, $quantity, $variation_id, $meta_data);
+
+                //*
+                $logger->info('add_to_saveforlater_ajax', [
+                    '$user_id'=>$user_id,
+                    '$variation_id'=>$variation_id,
+                    '$quantity' => $quantity,
+                ]);
+                //*/
             }
         }
-        //\Log::write('add to list');
-
-        $user_id    =   isset( $user_id )?$user_id:-1;
-        $quantity   =   isset( $quantity )?$quantity:1;
-        $variation_id   =   isset( $variation_id ) ? $variation_id: -1;
-
-        $return = $this->add($user_id, $product_id, $quantity, $variation_id, $meta_data);
 
         $message = '';
         if( $return == 'true' ){
@@ -67,6 +72,8 @@ class Ajax
         }
         elseif( $return == 'exists' ){
             $message = __('Product already in Save for later', 'yith-woocommerce-save-for-later') ;
+        }elseif( $return == 'error' ){
+            $message = __('Error', 'yith-woocommerce-save-for-later') ;
         }
 
         wp_send_json(
