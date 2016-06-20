@@ -183,8 +183,6 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
                 $results = $wpdb->get_var( $wpdb->prepare( $query, $parms ) );
                 $results = unserialize($results);
 
-                //\Log::write('$results = $wpdb->get_var( $wpdb->prepare( $query, $parms ) );'.print_r($results, true));
-
                 return $results;
             }
         }
