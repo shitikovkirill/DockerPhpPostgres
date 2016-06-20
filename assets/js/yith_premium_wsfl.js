@@ -18,7 +18,7 @@ jQuery( document ).ready( function( $ ){
             product_id: product_id,
             variation_id: variation_id,
             variation: var_items,
-            save_for_later_id:save_for_later_id,
+            save_for_later_id: save_for_later_id,
             action: yith_wsfl_premium_l10n.actions.add_to_cart_variable
         }
         console.log(data);
@@ -39,7 +39,7 @@ jQuery( document ).ready( function( $ ){
 
                 this_page = this_page.replace('add-to-cart', 'added-to-cart');
 
-               button.removeClass('loading');
+                button.removeClass('loading');
 
                 if (response.error && response.product_url) {
                     window.location = response.product_url;
@@ -48,12 +48,12 @@ jQuery( document ).ready( function( $ ){
 
                 fragments = response.fragments;
                 cart_hash = response.cart_hash;
-                // Block fragments class
-                if (fragments) {
-                    $.each(fragments, function (key, value) {
-                        $(key).addClass('updating');
-                    });
-                }
+                /*/ Block fragments class
+                 if (fragments) {
+                 $.each(fragments, function (key, value) {
+                 $(key).addClass('updating');
+                 });
+                 }//*/
 
                 // Block widgets and fragments
                 $('.shop_table.cart, .updating, .cart_totals,.widget_shopping_cart_top').fadeTo('400', '0.6').block({
@@ -72,7 +72,7 @@ jQuery( document ).ready( function( $ ){
                 // View cart text
                 if (!wc_add_to_cart_params.is_cart && button.parent().find('.added_to_cart').size() === 0) {
                     button.after(' <a href="' + wc_add_to_cart_params.cart_url + '" class="added_to_cart wc-forward" title="' +
-                    wc_add_to_cart_params.i18n_view_cart + '">' + wc_add_to_cart_params.i18n_view_cart + '</a>');
+                        wc_add_to_cart_params.i18n_view_cart + '">' + wc_add_to_cart_params.i18n_view_cart + '</a>');
                 }
 
 
@@ -89,7 +89,7 @@ jQuery( document ).ready( function( $ ){
                 // Cart page elements
                 $('.widget_shopping_cart_top').load(this_page + ' .widget_shopping_cart_top:eq(0) > *', function () {
 
-                 $('.widget_shopping_cart_top').stop(true).css('opacity', '1').unblock();
+                    $('.widget_shopping_cart_top').stop(true).css('opacity', '1').unblock();
 
                     $('body').trigger('cart_page_refreshed');
                 });
@@ -118,11 +118,11 @@ jQuery( document ).ready( function( $ ){
 
         var product_id      = $(this).data('product_id'),
             variation_id    = $(this).parent().find( 'input[name=variation_id]').val(),
-            variations      = $(this).parent().find('input[name^=attribute]'),
-            save_for_later_id = $(this).parent().find('input[name=save_for_later_id]').val();
+            variations      = $(this).parent().find('input[name^=attribute]');
+        save_for_later_id = + $(this).parent().find('input[name=save_for_later_id]').val();
 
         ev.preventDefault();
-        call_ajax_add_to_cart_variable( $(this), product_id, variation_id, variations, save_for_later_id );
+        call_ajax_add_to_cart_variable( $(this), product_id, variation_id, variations, save_for_later_id);
 
 
     });
@@ -132,9 +132,9 @@ jQuery( document ).ready( function( $ ){
         var oldCount = countItem.replace(/\D+/g,"");
         var newCount = oldCount - 1;
         if(newCount === 0){
-           str = newCount;
+            str = newCount;
         } else if(newCount === 1) {
-           str = newCount + ' item';
+            str = newCount + ' item';
         } else {
             str = newCount + ' items';
         }
