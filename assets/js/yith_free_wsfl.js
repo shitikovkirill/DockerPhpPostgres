@@ -80,7 +80,7 @@ jQuery( document ).ready( function( $ ){
             }
         });
     }
-
+/*
     $(document).on('added_to_savelist', 'body', function( ev, product_id, variation_id ){
         ev.preventDefault();
         var data = {
@@ -112,7 +112,7 @@ jQuery( document ).ready( function( $ ){
             }
         })
     } );
-
+*/
     $(document).on( 'adding_to_cart', 'body', function( ev, button, data ){
         var content =   button.closest( '#ywsfl_general_content'),
             row     =   button.closest( 'div.row' );
