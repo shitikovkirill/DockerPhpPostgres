@@ -21,7 +21,7 @@ jQuery( document ).ready( function( $ ){
             save_for_later_id: save_for_later_id,
             action: yith_wsfl_premium_l10n.actions.add_to_cart_variable
         }
-        console.log(data);
+        //console.log(data);
 
         button.removeClass( 'added' );
         button.addClass( 'loading' );
