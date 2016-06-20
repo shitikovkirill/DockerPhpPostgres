@@ -7,6 +7,7 @@
  */
 
 namespace ListProducts\Request;
+use Katzgrau\KLogger\Logger;
 use Symfony\Component\HttpFoundation\Request;
 
 class Ajax
@@ -23,6 +24,13 @@ class Ajax
      * @since 1.0.0
      */
     public function add_to_saveforlater_ajax(){
+        //*
+        $logger = new Logger(YWSFL_DIR.'/logs/add-to-saveforlater');
+        $logger->info('get_cart', [
+            '$_POST'=>$_POST,
+        ]);
+        die;
+        //*/
         $request = Request::createFromGlobals();
         $save_for_later = $request->request->get('save_for_later');
         $user_id = get_current_user_id();
@@ -30,10 +38,15 @@ class Ajax
         $variation_id = $request->request->get('variation_id');
         $quantity = $request->request->get('quantity');
 
-        //\Log::write(print_r($_REQUEST, true));
 
         global $woocommerce;
         $items = $woocommerce->cart->get_cart();
+
+        //*
+        $logger->info('get_cart', [
+            '$items'=>$items,
+        ]); //*/
+
         foreach($items as $item => $values) {
             if($product_id == $values['product_id']&&
                 $variation_id == $values['variation_id']){

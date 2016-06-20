@@ -11,8 +11,8 @@ License: A "Slug" license name e.g. GPL2
 */
 
 use SaveList\Plugin;
-require_once( 'Plugin.php');
 require_once( 'vendor/autoload.php');
+require_once( 'Plugin.php');
 require_once( 'hook/Filter.php');
 require_once( 'hook/Filter_add_to_cart_validation.php');
 require_once( 'hook/Action.php');
