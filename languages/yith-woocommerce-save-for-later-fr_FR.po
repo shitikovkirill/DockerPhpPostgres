@@ -1,0 +1,147 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: YITH WooCommerce Save for Later\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-09 14:05+0100\n"
+"PO-Revision-Date: Sat May 07 2016 08:45:58 GMT+0300 (EEST)\n"
+"Last-Translator: RMS <sh.kiruh@gmail.com>\n"
+"Language-Team: Yithemes <plugins@yithemes.com>\n"
+"Language: French (France)\n"
+"Plural-Forms: nplurals=2; plural=n > 1\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Loco - https://localise.biz/\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
+"__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;"
+"_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
+"esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
+"esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPathExcluded-0: ../plugin-fw\n"
+"X-Loco-Target-Locale: fr_FR"
+
+#: ../includes/class.yith-wsfl-install.php:122
+msgctxt "page_slug"
+msgid "saveforlater"
+msgstr ""
+
+#: ../includes/class.yith-wsfl-install.php:123
+#: ../includes/class.yith-wsfl.php:633 ../includes/class.yith-wsfl.php:634
+msgid "Save for later"
+msgstr ""
+
+#: ../includes/class.yith-wsfl-premium.php:253
+#: ../includes/class.yith-wsfl.php:380
+msgid "Product added"
+msgstr ""
+
+#: ../includes/class.yith-wsfl-premium.php:256
+#: ../includes/class.yith-wsfl.php:383
+msgid "Product already in Save for later"
+msgstr ""
+
+#: ../includes/class.yith-wsfl-premium.php:296
+#: ../includes/class.yith-wsfl.php:419
+msgid "Product deleted from Save for later"
+msgstr ""
+
+#: ../includes/class.yith-wsfl-premium.php:298
+#: ../includes/class.yith-wsfl.php:421
+msgid "No product"
+msgstr ""
+
+#: ../includes/class.yith-wsfl-shortcode.php:29
+msgid "Saved for later "
+msgstr ""
+
+#: ../includes/class.yith-wsfl.php:541
+msgid ""
+"We are sorry, but this feature is available only if cookies are enabled in "
+"your browser."
+msgstr ""
+
+#: ../includes/class.yith-wsfl.php:542
+msgid "Product correctly added to cart"
+msgstr ""
+
+#: ../includes/class.yith-wsfl.php:626 ../includes/class.yith-wsfl.php:689
+msgid "Settings"
+msgstr ""
+
+#: ../includes/class.yith-wsfl.php:627 ../includes/class.yith-wsfl.php:692
+msgid "Premium Version"
+msgstr ""
+
+#: ../includes/class.yith-wsfl.php:715
+msgid "Plugin Documentation"
+msgstr ""
+
+#: ../init.php:40
+msgid ""
+"YITH WooCommerce Save for Later Premium is enabled but not effective. It "
+"requires WooCommerce in order to work."
+msgstr ""
+
+#: ../plugin-options/general-options.php:19
+msgid "\"Save for Later\" text"
+msgstr ""
+
+#: ../plugin-options/general-options.php:21
+#: ../plugin-options/general-options.php:22
+#: ../plugin-options/general-options.php:30
+msgid "Save for Later"
+msgstr ""
+
+#: ../plugin-options/general-options.php:24
+msgid "You can set the text for your \"Save for Later\" link"
+msgstr ""
+
+#: ../plugin-options/general-options.php:28
+msgid "Save for Later page"
+msgstr ""
+
+#: ../plugin-options/general-options.php:32
+msgid ""
+"This page contains the [yith_wsfl_saveforlater] shortcode.<br> You can use "
+"this shortcode in other pages!."
+msgstr ""
+
+#: ../plugin-options/general-options.php:38
+msgid "Show \"Add to Wishlist\""
+msgstr ""
+
+#: ../plugin-options/general-options.php:42
+msgid ""
+"If YITH WooCommerce Wishlist is installed, you can display the \"Add to "
+"Wishlist\" link in your \"Save for Later\" list"
+msgstr ""
+
+#: ../templates/saveforlater-view.php:20
+#, php-format
+msgid "1 Product"
+msgid_plural "%s Products"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../templates/saveforlater-view.php:139
+msgid "Free!"
+msgstr ""
+
+#: ../templates/saveforlater-view.php:147
+msgid "Out of Stock"
+msgstr ""
+
+#: ../templates/saveforlater-view.php:150
+msgid "In Stock"
+msgstr ""
+
+#: ../plugin-options/general-options.php:13
+msgid "General Settings"
+msgstr ""
+
+#: ../saved_for_later/hook/Filter.php:23
+msgid "Add to cart"
+msgstr "Ajouter au panier"
