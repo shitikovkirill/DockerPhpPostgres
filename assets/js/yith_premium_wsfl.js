@@ -40,7 +40,9 @@ jQuery( document ).ready( function( $ ){
                 this_page = this_page.replace('add-to-cart', 'added-to-cart');
 
                 button.removeClass('loading');
-
+                if(response.pupap && response.message){
+                    
+                }
                 if (response.error && response.product_url) {
                     window.location = response.product_url;
                     return;

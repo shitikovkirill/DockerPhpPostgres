@@ -91,8 +91,8 @@ class Ajax
         if( $product_id==-1 )
             return "error";
 
-        //if( $this->is_product_in_savelist( $product_id, $variation_id ) )
-        //  return "exists";
+        if( $this->is_product_in_savelist( $product_id, $variation_id, $meta_data ) )
+            return "exists";
 
         if( $user_id!=-1 ){
 
@@ -142,7 +142,7 @@ class Ajax
      * @param $product_id
      * @return bool
      */
-    public function is_product_in_savelist( $product_id, $variation_id=-1 ){
+    public function is_product_in_savelist( $product_id, $variation_id=-1, $meta_data ){
         $exist =   false;
 
         if ( is_user_logged_in() ){
@@ -152,11 +152,14 @@ class Ajax
 
             $query  =   "SELECT COUNT(*) as cnt
                              FROM {$wpdb->yith_wsfl_table}
-                             WHERE {$wpdb->yith_wsfl_table}.product_id=%d AND {$wpdb->yith_wsfl_table}.user_id=%d";
+                             WHERE {$wpdb->yith_wsfl_table}.product_id=%d 
+                             AND {$wpdb->yith_wsfl_table}.user_id=%d
+                             AND {$wpdb->yith_wsfl_table}.meta_data=%s";
 
             $parms  =   array(
                 $product_id,
-                $user_id
+                $user_id,
+                $meta_data,
             );
 
             if( $variation_id!=-1 ){

@@ -111,27 +111,62 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
 
             $passed_validation = apply_filters( 'woocommerce_add_to_cart_validation', true, $product_id, $quantity, $variation_id);
 
-            //*
+            /*
             $logger->info('woocommerce_add_to_cart_validation', [
                 '$passed_validation'=>$passed_validation,
             ]);//*/
 
             $meta_data = $this->selectProductData($product_id, $variation_id, $save_for_later_id);
-            //*
+            global $woocommerce;
+            $items = $woocommerce->cart->get_cart();
+
+
+            /*
             $logger->info('selectProductData', [
                 '$meta_data'=>$meta_data,
+                '$items'=>$items
             ]);//*/
-            if(isset($meta_data['fpd_data'])){
+
+            $uge_est_takoy_tovar=false;
+            foreach($items as $item => $values) {
+                $meta_data_in_cart = md5(serialize($values));
+                $meta_data_in_list = md5(serialize($meta_data));
+
+                //*
+                $logger->info('$meta_data', [
+                    '$meta_data_in_cart'=>md5($meta_data_in_cart),
+                    '$meta_data_in_list'=>md5($meta_data_in_list)
+                ]);//*/
+
+                if($meta_data_in_cart == $meta_data_in_list){
+                    $uge_est_takoy_tovar = true;
+                }
+            }
+            //*
+            $logger->info('$uge_est_takoy_tovar', [
+                $uge_est_takoy_tovar
+            ]);//*/
+            if(!$uge_est_takoy_tovar){
+                if(isset($meta_data['fpd_data'])){
                     $_POST['fpd_product'] = $meta_data['fpd_data']['fpd_product'];
                     $_POST['fpd_product_price'] = $meta_data['fpd_data']['fpd_product_price'];
                     $_POST['fpd_product_thumbnail'] = $meta_data['fpd_data']['fpd_product_thumbnail'];
                     $_POST['fpd_remove_cart_item'] = $meta_data['fpd_data']['fpd_remove_cart_item'];
 
-                $request = new \Symfony\Component\HttpFoundation\Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
-                $request->overrideGlobals();
-                $rez = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation, $meta_data['fpd_data'] );
+                    $request = new \Symfony\Component\HttpFoundation\Request($_GET, $_POST, array(), $_COOKIE, $_FILES, $_SERVER);
+                    $request->overrideGlobals();
+
+                    $rez = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation, $meta_data['fpd_data'] );
+                } else {
+                    $rez = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation  );
+                }
             } else {
-                $rez = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation  );
+                $data = array(
+                    'pupap' => true,
+                    'message' => 'wwwwwwwwwwwwwwwwwwwwww',
+                );
+                echo json_encode( $data );
+                die();
             }
 
             if ( $passed_validation && $rez ) {
@@ -143,7 +178,6 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
                 // Return fragments
                 WC_AJAX::get_refreshed_fragments();
             } else {
-                $this->json_headers();
 
                 // If there was an error adding to the cart, redirect to the product page to show any errors
                 $data = array(
