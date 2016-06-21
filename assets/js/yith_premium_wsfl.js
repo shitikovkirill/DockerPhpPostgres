@@ -120,7 +120,7 @@ jQuery( document ).ready( function( $ ){
 
         var product_id      = $(this).data('product_id'),
             variation_id    = $(this).parent().find( 'input[name=variation_id]').val(),
-            variations      = $(this).parent().find('input[name^=attribute]');
+            variations      = $(this).parent().find('input[name^=attribute]'),
         save_for_later_id = + $(this).parent().find('input[name=save_for_later_id]').val();
 
         ev.preventDefault();

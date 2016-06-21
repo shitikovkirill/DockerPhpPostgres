@@ -129,20 +129,15 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
 
             $uge_est_takoy_tovar=false;
             foreach($items as $item => $values) {
-                $meta_data_in_cart = md5(serialize($values));
-                $meta_data_in_list = md5(serialize($meta_data));
-
-                //*
-                $logger->info('$meta_data', [
-                    '$meta_data_in_cart'=>md5($meta_data_in_cart),
-                    '$meta_data_in_list'=>md5($meta_data_in_list)
-                ]);//*/
+                $meta_data_in_cart = md5(serialize($values['fpd_data']));
+                $meta_data_in_list = md5(serialize($meta_data['fpd_data']));
 
                 if($meta_data_in_cart == $meta_data_in_list){
                     $uge_est_takoy_tovar = true;
+                    break;
                 }
             }
-            //*
+            /*
             $logger->info('$uge_est_takoy_tovar', [
                 $uge_est_takoy_tovar
             ]);//*/
@@ -163,7 +158,7 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
             } else {
                 $data = array(
                     'pupap' => true,
-                    'message' => 'wwwwwwwwwwwwwwwwwwwwww',
+                    'message' => 'This product already added to the cart',
                 );
                 echo json_encode( $data );
                 die();
