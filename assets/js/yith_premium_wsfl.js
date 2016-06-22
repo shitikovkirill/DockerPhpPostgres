@@ -41,7 +41,7 @@ jQuery( document ).ready( function( $ ){
 
                 button.removeClass('loading');
                 if(response.pupap && response.message){
-                    
+                    alert(response.message);
                 }
                 if (response.error && response.product_url) {
                     window.location = response.product_url;
@@ -49,13 +49,14 @@ jQuery( document ).ready( function( $ ){
                 }
 
                 fragments = response.fragments;
+                console.log(fragments);
                 cart_hash = response.cart_hash;
-                /*/ Block fragments class
-                 if (fragments) {
-                 $.each(fragments, function (key, value) {
-                 $(key).addClass('updating');
-                 });
-                 }//*/
+                //*/ Block fragments class
+                if (fragments) {
+                    $.each(fragments, function (key, value) {
+                        $(key).addClass('updating');
+                    });
+                }//*/
 
                 // Block widgets and fragments
                 $('.shop_table.cart, .updating, .cart_totals,.widget_shopping_cart_top').fadeTo('400', '0.6').block({
@@ -79,6 +80,7 @@ jQuery( document ).ready( function( $ ){
 
 
                 // Replace fragments
+                console.log('fragments', fragments);
                 if (fragments) {
                     $.each(fragments, function (key, value) {
                         $(key).replaceWith($($.trim(value)));
@@ -120,7 +122,7 @@ jQuery( document ).ready( function( $ ){
 
         var product_id      = $(this).data('product_id'),
             variation_id    = $(this).parent().find( 'input[name=variation_id]').val(),
-            variations      = $(this).parent().find('input[name^=attribute]'),
+            variations      = $(this).parent().find('input[name^=attribute]');
         save_for_later_id = + $(this).parent().find('input[name=save_for_later_id]').val();
 
         ev.preventDefault();
