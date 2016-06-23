@@ -40,7 +40,9 @@ class Ajax
 
 
         global $woocommerce;
+        $cart = $woocommerce->cart;
         $items = $woocommerce->cart->get_cart();
+        $cart->remove_cart_item($remove_item);
         $return = false;
         foreach($items as $item => $values) {
             if(

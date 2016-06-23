@@ -155,6 +155,7 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
                 } else {
                     $rez = WC()->cart->add_to_cart( $product_id, $quantity, $variation_id, $variation  );
                 }
+                $this -> deleteProductFromSaveList($save_for_later_id);
             } else {
                 $data = array(
                     'pupap' => true,
@@ -213,6 +214,13 @@ if( !class_exists( 'YITH_WC_Save_For_Later_Premium' ) ){
                 $results = unserialize($results);
 
                 return $results;
+            }
+        }
+
+        function deleteProductFromSaveList($save_for_later_id){
+            if ( is_user_logged_in() ){
+                global $wpdb;
+                $wpdb->delete( $wpdb->yith_wsfl_table, array( 'ID' => $save_for_later_id), array( '%d' ) );
             }
         }
 
