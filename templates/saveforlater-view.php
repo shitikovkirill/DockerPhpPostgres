@@ -58,10 +58,11 @@ if($elements > 0):?>
                               'save_for_later_id'       => $item['ID'],
                           );
                             $hidden_field   =   '<input type="hidden" name="'.strtolower( 'save_for_later_id' ).'" value="'.$item['ID'].'"/>';
+                            $random = rand(1, 10000);
                         ?>
                         <div class="delete_col"><a href="<?php echo esc_url( add_query_arg( $args, $url ) ) ?>" class="remove_from_savelist" data-save-for-later-id="<?php echo $item['ID']; ?>" data-product-id="<?php echo $item['product_id'];?>" data-variation-id="<?php echo $item['variation_id'];?>" title="Remove this product">&times;</a></div>
                         <div class="img_product" style="max-width: 250px;">
-                            <a href="#" id="linck<?php echo $item['product_id'].$item['variation_id']; ?>">
+                            <a href="#" id="linck<?php echo $item['product_id'].$item['variation_id'].$random; ?>">
                                 <?php
                                 if(isset($pd_product_thumbnail)){
                                     echo '<img width="250" height="200" sizes="(max-width: 250px) 200vw, 200px" srcset="'.$pd_product_thumbnail.'">';
@@ -73,9 +74,9 @@ if($elements > 0):?>
                         </div>
                         <div class="sub_container_product">
                             <div class="product_name">
-                                <h4><a href="#" id="linck<?php echo $item['product_id'].$item['variation_id']; ?>"><?php echo apply_filters( 'woocommerce_in_cartproduct_obj_title', $product->get_title(), $product ) ?></a></h4>
+                                <h4><a href="#" id="linck<?php echo $item['product_id'].$item['variation_id'].$random; ?>"><?php echo apply_filters( 'woocommerce_in_cartproduct_obj_title', $product->get_title(), $product ) ?></a></h4>
                                 <script>
-                                    jQuery('#linck<?php echo $item['product_id'].$item['variation_id']; ?>').popup({
+                                    jQuery('#linck<?php echo $item['product_id'].$item['variation_id'].$random; ?>').popup({
                                         content : <?php  $html = "'<div style=\"overflow: auto; height: 515px;\"><h1>{$fpd_product->title}</h1>";
 
                                     if(isset($pd_product_thumbnail)){
