@@ -1,9 +1,10 @@
 FROM fabianmartin/php-symfony:7.2-xdebug-debian
 
 
-RUN deps='autoconf libpq-dev build-essential' \
+RUN deps='autoconf build-essential' \
     && apt-get update \
     && apt-get install -y $deps \
+    && apt-get install -y libpq-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pgsql pdo_pgsql \
     && apt-get purge -y --auto-remove $deps \
