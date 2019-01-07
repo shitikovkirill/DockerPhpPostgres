@@ -2,14 +2,12 @@ FROM wordpress:php7.2-fpm-alpine
 
 ENV SYMFONY_ENV dev
 
-RUN apk add --no-cache $PHPIZE_DEPS \
-                        zlib-dev \
-                        postgresql-dev \
-                        icu-dev \
-                        sqlite-dev \
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+    && apk add --no-cache --virtual .ext-deps zlib-dev postgresql-dev icu-dev sqlite-dev \
 	&& pecl install redis apcu \
 	&& docker-php-ext-enable redis apcu \
-	&& docker-php-ext-install -j$(nproc) zip iconv intl json mbstring opcache pgsql pdo_pgsql pdo_sqlite
+	&& docker-php-ext-install -j$(nproc) zip iconv intl json mbstring opcache pgsql pdo_pgsql pdo_sqlite \
+	&& apk del .build-deps
 
 RUN addgroup -g 500 symfony \
     && adduser -u 500 -D -G symfony -h /home/symfony -s /bin/sh symfony \
@@ -23,13 +21,15 @@ RUN apk add --no-cache curl \
     && tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
     && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > "$PHP_INI_DIR/conf.d/blackfire.ini" \
-    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+    && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz \
+    && apk del curl
 
 RUN apk add --no-cache curl \
     && mkdir -p /tmp/blackfire \
     && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
-    && rm -Rf /tmp/blackfire
+    && rm -Rf /tmp/blackfire \
+    && apk del curl
 
 COPY conf.d /usr/local/etc/php/conf.d/
 COPY pool.d /usr/local/etc/php-fpm.d/

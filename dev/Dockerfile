@@ -2,14 +2,12 @@ FROM wordpress:php7.2-fpm-alpine
 
 ENV SYMFONY_ENV dev
 
-RUN apk add --no-cache $PHPIZE_DEPS \
-                        zlib-dev \
-                        postgresql-dev \
-                        icu-dev \
-                        sqlite-dev \
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+    && apk add --no-cache --virtual .ext-deps zlib-dev postgresql-dev icu-dev sqlite-dev \
 	&& pecl install redis apcu xdebug \
 	&& docker-php-ext-enable redis apcu xdebug \
-	&& docker-php-ext-install -j$(nproc) zip iconv intl json mbstring opcache pgsql pdo_pgsql pdo_sqlite
+	&& docker-php-ext-install -j$(nproc) zip iconv intl json mbstring opcache pgsql pdo_pgsql pdo_sqlite \
+	&& apk del .build-deps
 
 RUN addgroup -g 500 symfony \
     && adduser -u 500 -D -G symfony -h /home/symfony -s /bin/sh symfony \
