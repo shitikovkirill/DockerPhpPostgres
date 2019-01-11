@@ -7,7 +7,7 @@ RUN set -ex \
     && apk add --no-cache --virtual .ext-deps zlib-dev postgresql-dev icu-dev sqlite-dev \
 	&& pecl install redis apcu xdebug \
 	&& docker-php-ext-enable redis apcu xdebug \
-	&& docker-php-ext-install -j$(nproc) zip iconv intl json mbstring opcache pgsql pdo_pgsql pdo_sqlite \
+	&& docker-php-ext-install -j$(nproc) zip iconv intl json mbstring opcache pgsql pdo_pgsql pdo_sqlite sockets \
 	&& apk del .build-deps \
     && rm -rf /var/cache/apt/*
 
