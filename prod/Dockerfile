@@ -1,10 +1,11 @@
 FROM wordpress:php7.2-fpm-alpine
 
 ENV SYMFONY_ENV dev
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
 RUN set -ex \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
-    && apk add --no-cache --virtual .ext-deps zlib-dev postgresql-dev icu-dev sqlite-dev \
+    && apk add --no-cache --virtual .ext-deps zlib-dev postgresql-dev icu-dev sqlite-dev git composer \
 	&& pecl install redis apcu \
 	&& docker-php-ext-enable redis apcu \
 	&& docker-php-ext-install -j$(nproc) zip iconv intl json mbstring opcache pgsql pdo_pgsql pdo_sqlite sockets bcmath \
