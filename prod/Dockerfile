@@ -1,25 +1,40 @@
-FROM wordpress:php7.2-fpm-alpine
+FROM fabianmartin/php-symfony:7.2-debian
 
-ENV SYMFONY_ENV dev
-ENV COMPOSER_ALLOW_SUPERUSER 1
 
 RUN set -ex \
-    && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
-    && apk add --no-cache --virtual .ext-deps zlib-dev postgresql-dev icu-dev sqlite-dev git composer \
-	&& pecl install redis apcu \
-	&& docker-php-ext-enable redis apcu \
-	&& docker-php-ext-install -j$(nproc) zip iconv intl json mbstring opcache pgsql pdo_pgsql pdo_sqlite sockets bcmath \
-	&& apk del .build-deps \
-	&& rm -rf /var/cache/apt/*
-
-
-RUN addgroup -g 500 symfony \
-    && adduser -u 500 -D -G symfony -h /home/symfony -s /bin/sh symfony \
-    && mkdir -p /srv/symfony \
-    && chown symfony:symfony /srv/symfony
+    && deps='autoconf build-essential' \
+    && apt-get update -y \
+    && apt-get install -y $deps \
+    && apt-get install -y libpq-dev \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pgsql pdo_pgsql \
+    && apt-get purge -y --auto-remove $deps \
+    && apt-get autoclean
 
 RUN set -ex \
-    && apk add --no-cache --virtual .build-deps curl \
+    && deps='autoconf build-essential wget unzip' \
+    && apt-get update -y \
+    && apt-get install -y $deps \
+    && cd /tmp \
+    && wget https://github.com/phpredis/phpredis/archive/master.zip -O phpredis.zip \
+    && unzip -o /tmp/phpredis.zip \
+    && mv /tmp/phpredis-* /tmp/phpredis \
+    && cd /tmp/phpredis \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install \
+    && touch /usr/local/etc/php/conf.d/redis.ini \
+    && echo extension=redis.so > /usr/local/etc/php/conf.d/redis.ini \
+    && rm -rf /tmp/phpredis \
+    && rm -f /tmp/phpredis.zip \
+    && apt-get purge -y --auto-remove $deps \
+    && apt-get autoclean
+
+RUN set -ex \
+    && deps='curl' \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends "$deps" \
     && version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
     && curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s "https://blackfire.io/api/v1/releases/probe/php/linux/amd64/$version" \
     && mkdir -p /tmp/blackfire \
@@ -27,21 +42,20 @@ RUN set -ex \
     && mv /tmp/blackfire/blackfire-*.so $(php -r "echo ini_get('extension_dir');")/blackfire.so \
     && printf "extension=blackfire.so\nblackfire.agent_socket=tcp://blackfire:8707\n" > "$PHP_INI_DIR/conf.d/blackfire.ini" \
     && rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz \
-    && apk del .build-deps \
-    && rm -rf /var/cache/apt/*
+    && apt-get purge -y --auto-remove "$deps" \
+    && apt-get autoclean \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN set -ex \
-    && apk add --no-cache --virtual .build-deps curl \
+    && deps='curl' \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends "$deps" \
     && mkdir -p /tmp/blackfire \
     && curl -A "Docker" -L https://blackfire.io/api/v1/releases/client/linux_static/amd64 | tar zxp -C /tmp/blackfire \
     && mv /tmp/blackfire/blackfire /usr/bin/blackfire \
     && rm -Rf /tmp/blackfire \
-    && apk del .build-deps \
-    && rm -rf /var/cache/apt/*
+    && apt-get purge -y --auto-remove "$deps" \
+    && apt-get autoclean \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY conf.d /usr/local/etc/php/conf.d/
-COPY pool.d /usr/local/etc/php-fpm.d/
-
-WORKDIR /srv/symfony
-
-CMD ["php-fpm"]
+RUN sh -c "echo 'precedence ::ffff:0:0/96 100' >> /etc/gai.conf"
