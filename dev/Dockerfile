@@ -3,6 +3,8 @@ FROM php:7.2-fpm-alpine
 ENV SYMFONY_ENV dev
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
+RUN apk add --no-cache bash
+
 # install the PHP extensions we need (https://make.wordpress.org/hosting/handbook/handbook/server-environment/#php-extensions)
 RUN set -ex; \
 	\
